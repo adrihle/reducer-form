@@ -53,7 +53,7 @@ const EXPECTED: ErrorMap<FormSchema> = {
 };
 
 describe('validator', () => {
-  it('Should return expected values', () => {
+  it('Should return expected validation values', () => {
     const result = validator(VALIDATION_MAP);
     expect(result).toBeDefined();
     expect(result).toEqual(EXPECTED);

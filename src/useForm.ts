@@ -66,7 +66,7 @@ const applyReducers = <T>(reducers: ObserverReducer<T>[] = []): Reducer<T> => (s
   }
 };
 
-function useForm<T>({ initial, errorsOnChange = false, reducers = [] }: UseFormParams<T>) {
+function useForm<T>({ initial, errorsOnChange = false, reducers = [] }: UseFormParams<T> = {}) {
   const initialState = { ...initial, submitted: false } as State<T>;
   const [state, dispatch] = useReducer(applyReducers(reducers), initialState);
   const [errors, setErrors] = useState({} as ErrorMap<T>);
@@ -122,4 +122,4 @@ function useForm<T>({ initial, errorsOnChange = false, reducers = [] }: UseFormP
 };
 
 export { useForm };
-export type { ObserverReducer };
+export type { ObserverReducer, UseFormParams };
