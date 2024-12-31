@@ -20,13 +20,13 @@ type RegisterParams<T> = {
 };
 
 type Fields<T> = Record<RegisterParams<T>['name'], Omit<RegisterParams<T>, 'name'>>;
-type InputAttributes = React.InputHTMLAttributes<HTMLElement> & { ref: React.Ref<HTMLInputElement> };
+type InputAttributes = React.InputHTMLAttributes<HTMLElement> & { ref: React.Ref<any> };
 
 type Reducer<T> = (state: State<T>, action: Action<T>) => State<T>;
 type ObserverReducer<T> = (state: State<T>, action: ActionPayload<T>) => State<T>;
 
 type UseFormParams<T> = {
-  initial?: T;
+  initial?: Partial<T>;
   reducers?: ObserverReducer<T>[];
   errorsOnChange?: boolean;
 };
@@ -95,7 +95,7 @@ function useForm<T>({ initial, errorsOnChange = false, reducers = [] }: UseFormP
     return {
       name: String(name),
       onChange: onchange,
-      ref: (e: HTMLInputElement) => { refs[name as keyof typeof refs] = e; },
+      ref: (e: any) => { refs[name as keyof typeof refs] = e; },
       value: name in state ? state[name] as string : '',
     };
   };

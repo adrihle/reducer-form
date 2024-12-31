@@ -17,10 +17,23 @@ function FormProvider<T>({ children, ...params }: FormProviderProps<T>) {
   );
 };
 
-const useFormContext = () => {
+type ProviderProps<T> = {
+  children: React.ReactNode;
+} & ReturnType<typeof useForm<T>>;
+
+function Provider<T>({ children, ...form }: ProviderProps<T>) {
+  return (
+    <FormContext.Provider value={form}>
+      {children}
+    </FormContext.Provider>
+  );
+};
+
+function useFormContext() {
   const context = useContext(FormContext);
   if (Object.keys(context).length === 0) throw new Error('Should use hook inside provider');
   return context;
 };
 
-export { FormProvider, useFormContext };
+export { FormProvider, useFormContext, Provider };
+export type { FormProviderProps, ProviderProps };
