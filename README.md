@@ -97,7 +97,7 @@ import { useFormContext, FormProviderProps, FormProvider } from '../src';
 function Input<T>({ name }: { name: keyof T }) {
   const { register } = useFormContext<T>();
   return (
-    <input {...register({ name })} data-testid={name} />
+    <input {...register({ name })}/>
   );
 };
 
@@ -106,7 +106,7 @@ type SelectOption = { value: string, label: string };
 function Select<T>({ name, options = [] }: { name: keyof T, options: SelectOption[] }) {
   const { register } = useFormContext<T>();
   return (
-    <select {...register({ name })} data-testid={name}>
+    <select {...register({ name })}>
       {options.map(({ value, label }) => <option value={value} key={value}>{label}</option>)}
     </select>
   );
