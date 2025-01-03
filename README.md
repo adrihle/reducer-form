@@ -168,6 +168,7 @@ const ContextForm = () => {
 };
 ```
 
+
 ## Hook API
 
 `useForm(options)`:
@@ -191,11 +192,11 @@ The main hook for managing form state.
 	•	reset: A function to reset the form to its initial state.
 
 
-### Contribution
+## Contribution
 
 Feel free to open issues or submit pull requests if you’d like to improve the hook or add new features. Contributions are always welcome!
 
 
-### License
+## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
