@@ -35,48 +35,32 @@ type FormValues = {
 
 const BasicForm = () => {
 
-  const initialValues: Partial<FormValues> = {
-    name: 'Alice',
-  };
-
-  const reducer: ObserverReducer<FormValues> = (state, action) => {
-    // do any action here on field modification
-    return {
-      ...state,
-      [action.name]: action.value,
-    };
-  };
-
   const onSubmit = (submitValues: FormValues) => {
     // do any action here on submit
     console.log(submitValues);
   };
 
-  const { onsubmit, register, state, errors } = useForm<FormValues>({
-    initial: initialValues,
-    reducers: [reducer],
-    errorsOnChange,
-    onSubmit,
-  });
+  const { onsubmit, register, state, errors } = useForm<FormValues>({ onSubmit });
 
   return (
     <form onSubmit={onsubmit}>
       <div>
         <div>{state.name}</div>
-        <input {...register({ name: 'name', required: true })} data-testid={TEST_IDS.input1} />
+        <input {...register({ name: 'name', required: true })}/>
         {errors.name && <div>error</div>}
       </div>
 
       <div>
         <div>{state.surname}</div>
-        <input {...register({ name: 'surname', required: true })} data-testid={TEST_IDS.input2} />
-        {errors.surname && <div>error</div>}
+        <input {...register({ name: 'surname', pattern: /@?[a-z]{3,5}\d{2}[!.?]?/, required: true })}/>
+        {errors.surname?.pattern && <div>pattern error</div>}
+        {errors.surname?.required && <div>required error</div>}
       </div>
 
       <div>
         <div>{state.email}</div>
-        <input {...register({ name: 'email', type: 'email' })} data-testid={TEST_IDS.input3} />
-        {errors.email && <div data-testid={TEST_IDS.error3}>error</div>}
+        <input {...register({ name: 'email', type: 'email' })}/>
+        {errors.email && <div>error</div>}
       </div>
       <button type="submit">button</button>
     </form>
@@ -91,7 +75,7 @@ Use the context API to create reusable form components:
 #### Shared components
 ```tsx
 // components.tsx
-import { useFormContext, FormProviderProps, FormProvider } from '../src';
+import { useFormContext, FormProviderProps, FormProvider } from '@adrihfly/reducer-form';
 
 // --------- implementation components
 function Input<T>({ name }: { name: keyof T }) {
@@ -101,9 +85,7 @@ function Input<T>({ name }: { name: keyof T }) {
   );
 };
 
-type SelectOption = { value: string, label: string };
-
-function Select<T>({ name, options = [] }: { name: keyof T, options: SelectOption[] }) {
+function Select<T>({ name, options = [] }: { name: keyof T, options: { value: string, label: string }[] }) {
   const { register } = useFormContext<T>();
   return (
     <select {...register({ name })}>
@@ -185,7 +167,7 @@ The main hook for managing form state.
 #### Returns
 
 	•	onsubmit: A function to handle the form submission.
-	•	register: A function to register input fields with their properties.
+	•	register: A function to register input fields with their propertie and the validation rules.
 	•	state: The current state of the form.
 	•	errors: An object containing validation errors.
 	•	set: A function to programmatically set the value of a field.
