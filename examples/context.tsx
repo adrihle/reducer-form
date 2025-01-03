@@ -1,7 +1,7 @@
 import { useFormContext, useForm, FormProviderProps, FormProvider, ObserverReducer, UseFormParams } from '../src';
 
 // --------- implementation components
-function Input<T extends object>({ name }:  { name: keyof T }) {
+function Input<T extends object>({ name }: { name: keyof T }) {
   const { register } = useFormContext<T>();
   return (
     <input {...register({ name })} data-testid={name} />
@@ -21,7 +21,6 @@ function Select<T>({ name, options = [] }: { name: keyof T, options: SelectOptio
 
 type FormProps<T> = FormProviderProps<T>;
 
-// comprobar que no llega ya un boton tipo submit, y pintar por defecto
 function Form<T>({ children, ...form }: FormProps<T>) {
   const { onsubmit } = form;
   return (
@@ -36,7 +35,6 @@ function Form<T>({ children, ...form }: FormProps<T>) {
 
 
 // --------------- domain components
-//
 const TEST_IDS = {
   name: 'name',
   surname: 'surname',
@@ -56,10 +54,11 @@ type ContextFormProps<T> = {
 
 const ContextForm = ({ onSubmit, observer }: ContextFormProps<FormParams>) => {
 
-const reducer: ObserverReducer<FormParams> = (state, action) => {
-  observer();
-  return { ...state, [action.name]: action.value };
-};
+  const reducer: ObserverReducer<FormParams> = (state, action) => {
+    observer();
+    return { ...state, [action.name]: action.value };
+  };
+
   const form = useForm<FormParams>({
     initial: { name: 'pajarito' },
     reducers: [reducer],
@@ -72,7 +71,7 @@ const reducer: ObserverReducer<FormParams> = (state, action) => {
     <Form {...form}>
       <Input<FormParams> name="name" />
       <Input<FormParams> name="surname" />
-      <Select<FormParams> name="option" {...{ options }}/>
+      <Select<FormParams> name="option" {...{ options }} />
     </Form>
   );
 };
