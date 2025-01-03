@@ -94,7 +94,7 @@ Use the context API to create reusable form components:
 import { useFormContext, FormProviderProps, FormProvider } from '../src';
 
 // --------- implementation components
-function Input<T extends object>({ name }: { name: keyof T }) {
+function Input<T>({ name }: { name: keyof T }) {
   const { register } = useFormContext<T>();
   return (
     <input {...register({ name })} data-testid={name} />
