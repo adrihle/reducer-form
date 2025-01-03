@@ -1,4 +1,4 @@
-import { ObserverReducer, useForm } from '../src/useForm';
+import { ObserverReducer, useForm } from '../src';
 
 const TEST_IDS = {
   input1: 'input1',
