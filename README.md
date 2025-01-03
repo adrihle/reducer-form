@@ -2,7 +2,7 @@
 
 ## Overview
 
-`useForm` 
+`useForm` is a lightweight React hook designed to simplify form state management with advanced features like reducers for handling field changes, validation, and custom submission logic. It offers flexibility and scalability for both simple and complex forms. 
 
 
 ## Installation
@@ -23,6 +23,7 @@ yarn add @adrihfly/reducer-form
 
 ### Basic Example
 
+The following example demonstrates a simple form with the `useForm` hook:
 ```tsx
 import { ObserverReducer, useForm } from '@adrihfly/reducer-form';
 
@@ -35,7 +36,7 @@ type FormValues = {
 const BasicForm = () => {
 
   const initialValues: Partial<FormValues> = {
-    name: 'john',
+    name: 'Alice',
   };
 
   const reducer: ObserverReducer<FormValues> = (state, action) => {
@@ -85,7 +86,9 @@ const BasicForm = () => {
 
 ### Context Example
 
-You can design your own pattern for reuse components using form context
+Use the context API to create reusable form components:
+
+#### Shared components
 ```tsx
 // components.tsx
 import { useFormContext, FormProviderProps, FormProvider } from '../src';
@@ -124,7 +127,7 @@ function Form<T>({ children, ...form }: FormProviderProps<T>) {
 export { Form, Input, Select };
 ```
 
-And then implement in the codebase
+#### Implementation
 ```tsx
 // form.tsx
 import { useForm } from '@adrihfly/reducer-form';
@@ -167,12 +170,25 @@ const ContextForm = () => {
 
 ## Hook API
 
-TOOL(options):
+`useForm(options)`:
 
-#### Parameters:
+The main hook for managing form state.
 
+#### Parameters
 
-#### Returns: An object containing:
+	•	initial: (Optional) An object containing the initial form values.
+	•	reducers: (Optional) An array of observer reducers that handle field change logic.
+	•	errorsOnChange: (Optional) A boolean to validate fields on change. Defaults to false.
+	•	onSubmit: A function triggered when the form is submitted.
+
+#### Returns
+
+	•	onsubmit: A function to handle the form submission.
+	•	register: A function to register input fields with their properties.
+	•	state: The current state of the form.
+	•	errors: An object containing validation errors.
+	•	set: A function to programmatically set the value of a field.
+	•	reset: A function to reset the form to its initial state.
 
 
 ### Contribution
