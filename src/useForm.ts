@@ -29,6 +29,7 @@ type UseFormParams<T> = {
   initial?: Partial<T>;
   reducers?: ObserverReducer<T>[];
   errorsOnChange?: boolean;
+  onSubmit: ((formValues: Partial<T>) => void) | ((formValues: Partial<T>) => Promise<void>);
 };
 
 const createValidationMap = <T>({ fields, state }: { fields: Fields<T>, state: State<T> }) => {
@@ -66,7 +67,7 @@ const applyReducers = <T>(reducers: ObserverReducer<T>[] = []): Reducer<T> => (s
   }
 };
 
-function useForm<T>({ initial, errorsOnChange = false, reducers = [] }: UseFormParams<T> = {}) {
+function useForm<T>({ initial, errorsOnChange = false, reducers = [], onSubmit }: UseFormParams<T>) {
   const initialState = { ...initial, submitted: false } as State<T>;
   const [state, dispatch] = useReducer(applyReducers(reducers), initialState);
   const [errors, setErrors] = useState({} as ErrorMap<T>);
@@ -100,13 +101,13 @@ function useForm<T>({ initial, errorsOnChange = false, reducers = [] }: UseFormP
     };
   };
 
-  const onsubmit = (submit: (value: T) => void) => (e: React.SyntheticEvent) => {
+  const onsubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     const { submitted, ...formState } = state;
 
     if (!handleValidation()) return;
 
-    submit(formState as T)
+    await onSubmit(formState as T)
     dispatch({ type: 'SUBMIT' });
   };
 

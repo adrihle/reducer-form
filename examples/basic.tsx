@@ -28,10 +28,11 @@ const BaseForm = ({ reducers = [], onSubmit, initial, errorsOnChange }: BaseForm
     initial,
     reducers,
     errorsOnChange,
+    onSubmit,
   });
 
   return (
-    <form onSubmit={onsubmit(onSubmit)} data-testid="form">
+    <form onSubmit={onsubmit} data-testid="form">
       <div>
         <div>{state.name}</div>
         <input {...register({ name: 'name', required: true })} data-testid={TEST_IDS.input1} />

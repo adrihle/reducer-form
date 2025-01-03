@@ -1,37 +1,40 @@
 import { render, RenderResult, screen } from "@testing-library/react";
 import userEvent, { UserEvent } from '@testing-library/user-event';
 import { useForm, useFormContext } from "../src";
-import { Provider, ProviderProps } from "../src/context";
+import { FormProvider, FormProviderProps } from "../src/context";
 import { ObserverReducer } from "../src/useForm";
 
 // ------------GENERIC COMPONENTS STRUCTURE
-const Input = ({ name }: { name: string }) => {
-  const { register } = useFormContext();
+function Input<T extends object>({ name }:  { name: keyof T }) {
+  const { register } = useFormContext<T>();
   return (
-    <input {...register({ name: name as never })} data-testid={name} />
+    <input {...register({ name })} data-testid={name} />
   );
 };
 
-const Select = ({ name, options = [] }: any) => {
-  const { register } = useFormContext();
+type SelectOption = { value: string, label: string };
+
+function Select<T>({ name, options = [] }: { name: keyof T, options: SelectOption[] }) {
+  const { register } = useFormContext<T>();
   return (
-    <select {...register({ name: name as never })} data-testid={name}>
-      {options.map(({ value, label }: any) => <option value={value} key={value}>{label}</option>)}
+    <select {...register({ name })} data-testid={name}>
+      {options.map(({ value, label }) => <option value={value} key={value}>{label}</option>)}
     </select>
   );
 };
 
-type FormProps<T> = ProviderProps<T> & { onSubmit: (e: T) => void };
+type FormProps<T> = FormProviderProps<T>;
 
-function Form<T>({ children, onSubmit, ...form }: FormProps<T>) {
+// comprobar que no llega ya un boton tipo submit, y pintar por defecto
+function Form<T>({ children, ...form }: FormProps<T>) {
   const { onsubmit } = form;
   return (
-    <Provider<T> {...form}>
-      <form onSubmit={onsubmit(onSubmit)}>
+    <FormProvider<T> {...form}>
+      <form onSubmit={onsubmit}>
         {children}
         <button type="submit">submit</button>
       </form>
-    </Provider>
+    </FormProvider>
   );
 };
 
@@ -47,26 +50,23 @@ const onSubmit = jest.fn();
 
 const reducer: ObserverReducer<FormParams> = (state, action) => {
   observer();
-  return {
-    ...state,
-    [action.name]: action.value,
-  };
+  return { ...state, [action.name]: action.value };
 };
 
 const Playground = () => {
   const form = useForm<FormParams>({
     initial: { name: 'pajarito' },
     reducers: [reducer],
+    onSubmit,
   });
 
-  const { state, errors } = form;
+  const options = ['op1', 'op2', 'op3'].map((value) => ({ value, label: value }));
+
   return (
-    <Form {...form} onSubmit={onSubmit}>
-      <pre>{JSON.stringify(state, null, 2)}</pre>
-      <pre>{JSON.stringify(errors, null, 2)}</pre>
-      <Input name="name" />
-      <Input name="surname" />
-      <Select name="option" options={[{ value: 'op1', label: 'op1' }, { value: 'op2', label: 'op2' }]} />
+    <Form {...form}>
+      <Input<FormParams> name="name" />
+      <Input<FormParams> name="surname" />
+      <Select<FormParams> name="option" {...{ options }}/>
     </Form>
   );
 };

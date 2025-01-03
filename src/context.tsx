@@ -1,27 +1,15 @@
 import { createContext, useContext } from "react";
-import { useForm, UseFormParams } from './useForm';
+import { useForm } from './useForm';
 
-type FormContextType = ReturnType<typeof useForm>;
+type FormContextType<T> = ReturnType<typeof useForm<T>>;
 
-const FormContext = createContext<FormContextType>({} as FormContextType);
+const FormContext = createContext<any>({});
 
-type FormProviderProps<T> = UseFormParams<T> & { children: React.ReactNode };
-
-function FormProvider<T>({ children, ...params }: FormProviderProps<T>) {
-  const form = useForm(params);
-
-  return (
-    <FormContext.Provider value={{...form}}>
-      {children}
-    </FormContext.Provider>
-  );
-};
-
-type ProviderProps<T> = {
+type FormProviderProps<T> = {
   children: React.ReactNode;
-} & ReturnType<typeof useForm<T>>;
+} & FormContextType<T>;
 
-function Provider<T>({ children, ...form }: ProviderProps<T>) {
+function FormProvider<T>({ children, ...form }: FormProviderProps<T>) {
   return (
     <FormContext.Provider value={form}>
       {children}
@@ -29,11 +17,11 @@ function Provider<T>({ children, ...form }: ProviderProps<T>) {
   );
 };
 
-function useFormContext() {
-  const context = useContext(FormContext);
+function useFormContext<T>() {
+  const context = useContext<FormContextType<T>>(FormContext);
   if (Object.keys(context).length === 0) throw new Error('Should use hook inside provider');
   return context;
 };
 
-export { FormProvider, useFormContext, Provider };
-export type { FormProviderProps, ProviderProps };
+export { useFormContext, FormProvider };
+export type { FormProviderProps };
