@@ -71,6 +71,7 @@ function useForm<T>({ initial, errorsOnChange = false, reducers = [], onSubmit }
   const initialState = { ...initial, submitted: false } as State<T>;
   const [state, dispatch] = useReducer(applyReducers(reducers), initialState);
   const [errors, setErrors] = useState({} as ErrorMap<T>);
+  const [loading, setLoading] = useState(false);
   const fields = useRef({} as Fields<T>).current;
   const refs = useRef({} as Record<keyof T, HTMLElement>).current;
 
@@ -103,12 +104,14 @@ function useForm<T>({ initial, errorsOnChange = false, reducers = [], onSubmit }
 
   const onsubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
+    setLoading(true);
     const { submitted, ...formState } = state;
 
     if (!handleValidation()) return;
 
     await onSubmit(formState as T)
     dispatch({ type: 'SUBMIT' });
+    setLoading(false);
   };
 
   const set = (name: keyof T, value: T[keyof T]) => {
@@ -119,7 +122,7 @@ function useForm<T>({ initial, errorsOnChange = false, reducers = [], onSubmit }
     dispatch({ type: 'RESET' });
   };
 
-  return { onsubmit, register, state, errors, set, reset };
+  return { onsubmit, register, state, errors, set, reset, loading };
 };
 
 export { useForm };
