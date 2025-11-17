@@ -1,6 +1,6 @@
 {
   "name": "@adrihfly/reducer-form",
-  "version": "1.0.0",
+  "version": "1.0.1-beta.0",
   "description": "A reducer approach to handle forms in react",
   "main": "dist/index.cjs.js",
   "types": "dist/types/src/index.d.ts",
