@@ -1,5 +1,5 @@
 {
-  "name": "@adrihfly/reducer-form",
+  "name": "@nimibyte/reducer-form",
   "version": "1.0.1-beta.0",
   "description": "A reducer approach to handle forms in react",
   "main": "dist/index.cjs.js",
@@ -22,7 +22,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/adrihle/reducer-form.git"
+    "url": "git+https://github.com/nimibyte/reducer-form.git"
   },
   "keywords": [
     "react",
@@ -30,12 +30,12 @@
     "form",
     "context"
   ],
-  "author": "Adrian Lopez Espinosa",
-  "license": "ISC",
+  "author": "Nimibyte Labs <info@nimibyte.com>",
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/adrihle/reducer-form/issues"
+    "url": "https://github.com/nimibyte/reducer-form/issues"
   },
-  "homepage": "https://github.com/adrihle/reducer-form#readme",
+  "homepage": "https://github.com/nimibyte/reducer-form#readme",
   "dependencies": {
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
