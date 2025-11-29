@@ -10,13 +10,13 @@
 You can install the package via npm:
 
 ```bash
-npm install @adrihfly/reducer-form
+npm install @nimibyte/reducer-form
 ```
 
 Or via yarn:
 
 ```bash
-yarn add @adrihfly/reducer-form
+yarn add @nimibyte/reducer-form
 ```
 
 ## Usage
@@ -25,7 +25,7 @@ yarn add @adrihfly/reducer-form
 
 The following example demonstrates a simple form with the `useForm` hook:
 ```tsx
-import { ObserverReducer, useForm } from '@adrihfly/reducer-form';
+import { ObserverReducer, useForm } from '@nimibyte/reducer-form';
 
 type FormValues = {
   name: string;
@@ -75,7 +75,7 @@ Use the context API to create reusable form components:
 #### Shared components
 ```tsx
 // components.tsx
-import { useFormContext, FormProviderProps, FormProvider } from '@adrihfly/reducer-form';
+import { useFormContext, FormProviderProps, FormProvider } from '@nimibyte/reducer-form';
 
 // --------- implementation components
 function Input<T>({ name }: { name: keyof T }) {
@@ -112,7 +112,7 @@ export { Form, Input, Select };
 #### Implementation
 ```tsx
 // form.tsx
-import { useForm } from '@adrihfly/reducer-form';
+import { useForm } from '@nimibyte/reducer-form';
 import { Form, Input, Select } from './components';
 
 type FormParams = {
